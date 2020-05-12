@@ -37,3 +37,23 @@ public:
         return ret;
     }
 };
+
+
+// hash map解决方法
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        map<int, int>m;
+        vector<int>vecRet;
+        for(int i = 0; i < nums.size(); ++i) {
+            int nTmp = target - nums[i];
+            if(m.find(nTmp) != m.end()) {
+                vecRet.push_back(m.find(nTmp)->second);
+                vecRet.push_back(i);
+                return vecRet;
+            }
+            m.insert(pair<int, int>(nums[i], i));
+        }
+        return vecRet;
+    }
+};
