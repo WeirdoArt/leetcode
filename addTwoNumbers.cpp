@@ -27,9 +27,9 @@ public:
         while(p || q) {
             int x = p ? p->val : 0;
             int y = q ? q->val : 0;
-            int sum = carry + x + y;
-            carry = sum / 10;
-            current->next = new ListNode(sum % 10);
+            int sum = carry + x + y; // 1[7], 2[10], 3[8]
+            carry = sum / 10; // 1[0], 2[1], 3[0]
+            current->next = new ListNode(sum % 10); // 1[node->7], 2[node->0], 3[node->8]
             current = current->next;
             
             if(p) p = p->next;
