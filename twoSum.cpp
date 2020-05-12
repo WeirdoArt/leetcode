@@ -1,3 +1,4 @@
+// 暴力求解
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
@@ -14,7 +15,7 @@ public:
     }
 };
 
-// 以下解决方式会超出时间限制(Time Limit Exceeded)
+// 以下解决方式会超出时间限制(Time Limit Exceeded)（自己写的，想法是双循环改成单循环）
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
@@ -39,6 +40,11 @@ public:
 };
 
 
+/* 
+[2,7,11,15]
+9
+*/
+
 // hash map解决方法
 class Solution {
 public:
@@ -46,13 +52,14 @@ public:
         map<int, int>m;
         vector<int>vecRet;
         for(int i = 0; i < nums.size(); ++i) {
-            int nTmp = target - nums[i];
-            if(m.find(nTmp) != m.end()) {
-                vecRet.push_back(m.find(nTmp)->second);
-                vecRet.push_back(i);
+            int nTmp = target - nums[i]; // loop1[tmp = 7], loop2[tmp = 2]
+            if(m.find(nTmp) != m.end()) { // 如果找到，代表已经存在
+                vecRet.push_back(m.find(nTmp)->second); // 0
+                vecRet.push_back(i); // 1
                 return vecRet;
             }
-            m.insert(pair<int, int>(nums[i], i));
+            // loop1[m = (2, 0)]
+            m.insert(pair<int, int>(nums[i], i)); // vector的值当作key，下标当作value插入到map, 因为要返回下标数组，所以这里的value要存vector的下标
         }
         return vecRet;
     }
