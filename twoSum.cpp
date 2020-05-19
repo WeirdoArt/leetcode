@@ -26,18 +26,18 @@ public:
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
-        vector<int> vecret;
-        map<int, int>m;        
+        vector<int> vecIdx;
+        map<int, int>mapCmp;        
         for (int i = 0; i < nums.size(); ++i) {
             int cmp = target - nums[i]; // 求补码
-            if (m.find(cmp) != m.end()) {
-                vecret.push_back(m.find(cmp)->second);
-                vecret.push_back(i);
-                return vecret;
+            if (mapCmp.find(cmp) != mapCmp.end()) {
+                vecIdx.push_back(mapCmp.find(cmp)->second);
+                vecIdx.push_back(i);
+                return vecIdx;
             }
-            m.insert(pair<int, int>(nums[i], i));
+            mapCmp.insert(pair<int, int>(nums[i], i));
         }
-        return vecret;
+        return vecIdx;
     }
 };
 /**
