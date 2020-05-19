@@ -1,11 +1,11 @@
-// 暴力求解
+// Approach 1: Brute Force
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
         vector<int>ret;
-        for(int i = 0; i < nums.size(); ++i) {
-            for(int j = i; j < nums.size(); ++j) {
-                if(nums[i] + nums[j] == target && i != j) {
+        for(int i = 0; i < nums.size() - 1; ++i) {
+            for(int j = i + 1; j < nums.size(); ++j) { // Note: 这里j=i+1，因为不能使用同一个数
+                if(nums[i] + nums[j] == target) {
                     ret.push_back(i);
                     ret.push_back(j);
                 }
@@ -14,8 +14,14 @@ public:
         return ret;
     }
 };
+/**
+解题思路：
+    暴力求解就是两层迭代，外层迭代遍历“每个元素”（最后一个元素不需要做计算），
+    内层迭代遍历“剩余元素”（从外层迭代的索引的下一个位置到最后），
+    将内层迭代的每个元素与外层迭代的“当前”元素做运算，满足条件立即返回；
+ */
 
-// 以下解决方式会超出时间限制(Time Limit Exceeded)（自己写的，想法是双循环改成单循环）
+// 以下解决方式会超出时间限制(Time Limit Exceeded)（自己写的，想法是把上面双循环改成单循环）
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
@@ -45,22 +51,28 @@ public:
 9
 */
 
-// hash map解决方法
+// Approach 3: One-pass Hash Table
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
-        map<int, int>m;
-        vector<int>vecRet;
-        for(int i = 0; i < nums.size(); ++i) {
-            int nTmp = target - nums[i]; // loop1[tmp = 7], loop2[tmp = 2]
-            if(m.find(nTmp) != m.end()) { // 如果找到，代表已经存在
-                vecRet.push_back(m.find(nTmp)->second); // 0
-                vecRet.push_back(i); // 1
-                return vecRet;
+        vector<int> vecret;
+        map<int, int>m;        
+        for (int i = 0; i < nums.size(); ++i) {
+            int cmp = target - nums[i]; // 求补码
+            if (m.find(cmp) != m.end()) {
+                vecret.push_back(m.find(cmp)->second);
+                vecret.push_back(i);
+                return vecret;
             }
-            // loop1[m = (2, 0)]
-            m.insert(pair<int, int>(nums[i], i)); // vector的值当作key，下标当作value插入到map, 因为要返回下标数组，所以这里的value要存vector的下标
+            m.insert(pair<int, int>(nums[i], i));
         }
-        return vecRet;
+        return vecret;
     }
 };
+/**
+解题思路：
+    关键点1：补码机制（这里的补码指差值）
+    关键点2：利用hash table的机制（C++里就用map）
+    在迭代每个元素的同时，将（元素，下标）插入map，并在此过程中检查“差值元素”是否已存在于map中，
+    如果存在，如果存在标识满足条件立即返回当前下标与map中“差值元素”的下标
+ */
