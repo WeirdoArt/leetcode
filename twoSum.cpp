@@ -2,16 +2,17 @@
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
-        vector<int>ret;
+        vector<int>vecIdx;
         for(int i = 0; i < nums.size() - 1; ++i) {
             for(int j = i + 1; j < nums.size(); ++j) { // Note: 这里j=i+1，因为不能使用同一个数
                 if(nums[i] + nums[j] == target) {
-                    ret.push_back(i);
-                    ret.push_back(j);
+                    vecIdx.push_back(i);
+                    vecIdx.push_back(j);
+                    return vecIdx;
                 }
             }
         }
-        return ret;
+        return vecIdx;
     }
 };
 /**
@@ -20,36 +21,6 @@ public:
     内层迭代遍历“剩余元素”（从外层迭代的索引的下一个位置到最后），
     将内层迭代的每个元素与外层迭代的“当前”元素做运算，满足条件立即返回；
  */
-
-// 以下解决方式会超出时间限制(Time Limit Exceeded)（自己写的，想法是把上面双循环改成单循环）
-class Solution {
-public:
-    vector<int> twoSum(vector<int>& nums, int target) {
-        vector<int>ret;
-        
-        int i = 0, j = 0;
-        while(i < nums.size()) {
-            j = i + 1;
-            if(nums[i] + nums[j] == target && i != j) {
-                ret.push_back(i);
-                ret.push_back(j);
-                break;
-            }
-            else {
-                ++j;
-                --i;
-            }
-            ++i;
-        }
-        return ret;
-    }
-};
-
-
-/* 
-[2,7,11,15]
-9
-*/
 
 // Approach 3: One-pass Hash Table
 class Solution {
