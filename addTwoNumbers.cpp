@@ -8,36 +8,34 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
-
-/*
-input:
-[2,4,3]
-[5,6,4]
-
-output:
-[7,0,8]
-*/
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        ListNode* pHead = new ListNode();
-        ListNode* current = pHead;
-        ListNode* p = l1, *q = l2;
+        ListNode *p = l1, *q = l2;
+        ListNode head; // 虚拟头节点
+        ListNode *currNode = &head;
         int carry = 0;
-        while(p || q) {
+        while (p || q) {
             int x = p ? p->val : 0;
             int y = q ? q->val : 0;
-            int sum = carry + x + y; // 1[7], 2[10], 3[8]
-            carry = sum / 10; // 1[0], 2[1], 3[0]
-            current->next = new ListNode(sum % 10); // 1[node->7], 2[node->0], 3[node->8]
-            current = current->next;
+            int sum = x + y + carry;
+            carry = sum / 10;
+            currNode->next = new ListNode(sum % 10); // 链表操作技巧
+            currNode = currNode->next;
             
-            if(p) p = p->next;
-            if(q) q = q->next;
+            p = p ? p->next : p;
+            q = q ? q->next : q;
         }
-        if(carry > 0) {
-            current->next = new ListNode(carry);
+        if (carry > 0) { // 最后检查最高位是否溢出
+            currNode->next = new ListNode(carry);
         }
-        return pHead->next;
+        return head.next; // 返回实际头节点，虚拟头节点在栈上会自动回收
     }
 };
+/**
+解题思路：
+    关键点1：除法和求模运算的巧妙应用
+    关键点2：链表操作的语法细节（向后迭代）以及虚拟头节点的应用
+    遍历两个链表，将两个节点相加得到sum(求和的时候应该把进位考虑进去)，
+    把 sum 拆解为“进位”与“个位”（两个个位数相加，进位只能是0或1{9+9+1=19}）    
+ */
