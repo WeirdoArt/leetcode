@@ -2,6 +2,27 @@
 class Solution {
 public:
     string longestCommonPrefix(vector<string>& strs) {
+        if (strs.empty()) {
+            return "";
+        }
+        
+        string cache;
+        for (int i = 0; i < strs[0].size(); ++i) {
+            auto ch = strs[0][i];
+            for (int j = 1; j < strs.size(); ++j) {
+                if (i == strs[j].size() || ch != strs[j][i]) {
+                    return strs[0].substr(0, i);
+                }
+            }
+        }
+        return strs[0];
+    }
+};
+
+// Approach 2: Vertical scanning
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
         if(strs.size() == 0) {
             return "";
         }
